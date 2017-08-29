@@ -1,0 +1,33 @@
+﻿@using System
+@using Microsoft.AspNetCore.Mvc.Rendering
+@model string
+@{
+    var elemId = Guid.NewGuid();
+}
+@Html.Raw($"<span id='{elemId}'></span>")
+<script>
+    var date = new Date('@Model' + ' UTC');
+
+    var monthNames = [
+        "January", "February", "March",
+        "April", "May", "June", "July",
+        "August", "September", "October",
+        "November", "December"
+    ];
+
+    var day = date.getDate();
+    var monthIndex = date.getMonth();
+    var year = date.getFullYear();
+
+    var formattedDay = monthNames[monthIndex] +
+        ' ' +
+        day +
+        ', ' +
+        year +
+        ' | ' +
+        date.getHours() +
+        ':' +
+        date.getMinutes();
+
+    document.getElementById('@elemId').innerHTML = formattedDay;
+</script>

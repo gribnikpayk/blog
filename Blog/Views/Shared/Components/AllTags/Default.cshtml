@@ -1,0 +1,15 @@
+﻿@using System.Linq
+@model System.Collections.Generic.List<string>
+
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Теги</h3>
+    </div>
+    <div class="panel-body">
+        @foreach (var tag in Model)
+        {
+        <a class="btn btn-primary btn-lg tag" asp-action="Tag" asp-controller="Home" asp-route-name="@tag">@tag</a>
+        }
+    </div>
+</div>

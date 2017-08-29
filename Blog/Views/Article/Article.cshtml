@@ -1,0 +1,17 @@
+﻿@model Blog.ViewModel.ArticleViewModel
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+@section Keywords{
+    <meta name="keywords" content="@Model.Tags" />
+}
+
+<div class="container content">
+    <div class="row">
+        <h2>@Model.Title</h2>
+        <div>
+            @Html.Raw(Model.Body)
+        </div>
+    </div>
+</div>

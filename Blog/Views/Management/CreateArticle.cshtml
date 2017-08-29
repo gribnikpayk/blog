@@ -1,0 +1,70 @@
+﻿@using Microsoft.AspNetCore.Mvc.Rendering
+<link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.7/summernote.css" rel="stylesheet">
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+@section Scripts{
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.7/summernote.js"></script>
+}
+
+<div class="container">
+    <h2>Новая новость</h2>
+    <div class="form-group">
+        <label for="Title">Title</label>
+        <input class="form-control" id="title" placeholder="Title" name="Title">
+    </div>
+    <div class="form-group">
+        @Html.Partial("UploadImage")
+    </div>
+    <div>
+        <div id="shortDesc"></div>
+    </div>
+    <div>
+        <div id="summernote"></div>
+    </div>
+    <div class="form-group">
+        @await Component.InvokeAsync("TagAutocomplete",string.Empty)
+    </div>
+    <div class="form-group">
+        @await Component.InvokeAsync("CategoryAutocomplete", string.Empty)
+    </div>
+    <div class="checkbox">
+        <label><input type="checkbox" id="IsPublished" name="IsPublished">Опубликовать</label>
+    </div>
+    <div class="checkbox">
+        <label><input type="checkbox" id="IsTopPlacement" name="IsTopPlacement" />Прикрепить новость</label>
+    </div>
+    <button type="submit" id="save" class="btn btn-default">Сохранить</button>
+</div>
+<script>
+    $(document).ready(function () {
+        $('#shortDesc').summernote();
+        $('#summernote').summernote();
+        $('#save').on('click', function () {
+            var data = {};
+            data.Title = $('#title').val();
+            data.Body = $("#summernote + .note-editor .panel-body").html();
+            data.IsPublished = $("#IsPublished").is(':checked');
+            data.IsTopPlacement = $("#IsTopPlacement").is(':checked');
+            data.Tags = $("#Tags").val();
+            data.Categories = $("#Categories").val();
+            data.ShortDescription = $("#shortDesc + .note-editor .panel-body").html();
+
+            $.ajax({
+                type: "POST",
+                url: '/Management/CreateArticle',
+                data: data,
+                success: function (result) {
+                    alert("success");
+                },
+                error: function (xhr, status, p3, p4) {
+                    alert("error");
+                }
+            });
+        });
+    });
+</script>
+
+
+
+
+

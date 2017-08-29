@@ -1,0 +1,15 @@
+﻿@model string
+
+@{
+    var descriptionLength = 1000;
+    var shortText = string.Empty;
+    if (string.IsNullOrEmpty(Model) || Model.Length <= descriptionLength)
+    {
+        shortText = $"<div>{Model}</div>";
+    }
+    else
+    {
+        shortText = $"<div>{Model.Substring(0, descriptionLength)}...</div>";
+    }
+}
+@Html.Raw(shortText)

@@ -1,0 +1,79 @@
+﻿@using System
+@using Microsoft.AspNetCore.Mvc.Rendering
+@model Blog.ViewModel.ManagementViewModel
+@*<script>
+        function convertUTCDateToLocalDate(date) {
+            var newDate = new Date(date.getTime() + date.getTimezoneOffset() * 60 * 1000);
+
+            var offset = date.getTimezoneOffset() / 60;
+            var hours = date.getHours();
+
+            newDate.setHours(hours - offset);
+
+            return newDate;
+        }
+        function appendDate(date, idElem) {
+            var localDate = convertUTCDateToLocalDate(new Date(date));
+            var formatDateVal = formatDate(localDate);
+            document.getElementById(idElem).innerHTML = formatDateVal;
+        }
+
+        function formatDate(date) {
+            var monthNames = [
+                "January", "February", "March",
+                "April", "May", "June", "July",
+                "August", "September", "October",
+                "November", "December"
+            ];
+
+            var day = date.getDate();
+            var monthIndex = date.getMonth();
+            var year = date.getFullYear();
+
+            return day + ' ' + monthNames[monthIndex] + ' ' + year + ' <span class="time">' + date.getHours() + ':' + date.getMinutes() +'</span>';
+        }
+    </script>*@
+
+<h2>Management</h2>
+
+<a class="btn btn-info btn-lg" asp-controller="Management" asp-action="CreateArticle">Добавить</a>
+
+@foreach (var article in Model.Articles)
+{
+    <article>
+        <h2><a asp-action="Article" asp-controller="Management" asp-route-id="@article.Id">@article.Title</a></h2>
+        <a asp-action="UpdateArticle" asp-route-id="@article.Id">Обновить</a>
+        <a asp-action="DeleteArticle" asp-route-id="@article.Id">Удалить</a>
+        <div class="row">
+            <div style="padding-left: 15px">
+                @if (!string.IsNullOrEmpty(article.Tags))
+                {
+                    <span class="glyphicon glyphicon-bookmark"></span>
+                    foreach (var tag in article.Tags.Split(','))
+                    {
+                        <a href="#">@tag</a>
+                    }
+                }
+            </div>
+            <div style="padding-left: 15px">
+                @*<span class="glyphicon glyphicon-pencil"></span> <a href="singlepost.html#comments">20 Comments</a>*@
+                <span class="glyphicon glyphicon-time"></span>
+                @Html.Partial("DateTimeFormat", article.Date)
+
+            </div>
+        </div>
+
+        <hr>
+        <div>
+            @Html.Partial("ShortDescription", article.Body)
+        </div>
+        <p class="text-right">
+            <a asp-action="Article" asp-controller="Management" asp-route-id="@article.Id">Читать</a>
+        </p>
+        <hr>
+    </article>
+
+
+}
+
+@await Component.InvokeAsync("Paginator", Model.PageViewModel)

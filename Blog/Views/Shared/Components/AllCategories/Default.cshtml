@@ -1,0 +1,44 @@
+﻿@using System.Linq
+@model System.Collections.Generic.List<Blog.Component.AllCategoriesComponentModel>
+
+@{
+    var countInList = Model.Count / 2;
+    var leftList = Model.Take(countInList);
+    var rightList = Model.Take(Model.Count).Skip(countInList);
+}
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Категории</h3>
+    </div>
+    <div class="panel-body AllCategory">
+        <div class="row">
+            <div class="col-lg-6">
+                <ul class="list-group">
+                    @foreach (var category in leftList)
+                    {
+                        <li class="list-group-item">
+                            <a asp-controller="Home" asp-action="Category" asp-route-name="@category.Name">
+                                <span class="badge">@category.Count</span>
+                                @category.Name
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </div>
+            <div class="col-lg-6">
+                <ul class="list-group">
+                    @foreach (var category in rightList)
+                    {
+                        <li class="list-group-item">
+                            <a asp-controller="Home" asp-action="Category" asp-route-name="@category.Name">
+                                <span class="badge">@category.Count</span>
+                                @category.Name
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

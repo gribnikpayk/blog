@@ -1,0 +1,11 @@
+﻿@using System
+@model Blog.ViewModel.PageViewModel
+
+<ul class="pagination">
+    @for (var i = 1; i <= Model.PageCount; i++)
+    {
+        <li>
+            <a asp-controller="@Model.Controller" asp-action="@Model.Action" asp-route-page="@i">@i</a>
+        </li>
+    }
+</ul>
