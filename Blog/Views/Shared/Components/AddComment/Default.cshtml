@@ -1,0 +1,79 @@
+﻿@model int
+<form id="commentForm" class="form-horizontal" asp-action="AddComment" asp-controller="Article" style="margin-top: 50px;">
+    <div class="overlay">
+        <p id="sendedCommentStatus"></p>
+    </div>
+    <fieldset>
+        <legend>Добавить комментарий</legend>
+        <div class="form-group" id="nameWrap">
+            <label for="inputName" class="col-lg-2 control-label">Имя*</label>
+            <div class="col-lg-10">
+                <input type="text" class="form-control" id="inputName" name="Author" placeholder="Имя">
+            </div>
+        </div>
+        <div class="form-group" id="emailWrap">
+            <label for="inputEmail" class="col-lg-2 control-label">Email (не публикуется)</label>
+            <div class="col-lg-10">
+                <input type="text" class="form-control" id="inputEmail" name="Email" placeholder="Email">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="inputSite" class="col-lg-2 control-label">Сайт</label>
+            <div class="col-lg-10">
+                <input type="text" class="form-control" id="inputSite" name="Site" placeholder="Сайт">
+            </div>
+        </div>
+
+        <div class="form-group" id="bodyWrap">
+            <label for="textArea" class="col-lg-2 control-label">Комментарий*</label>
+            <div class="col-lg-10">
+                <textarea class="form-control" rows="3" id="comment" name="Body"></textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-lg-10 col-lg-offset-2">
+                <button type="submit" id="addComment" class="btn btn-primary">Добавить</button>
+            </div>
+        </div>
+    </fieldset>
+</form>
+<script>
+    $(document).ready(function () {
+        $("#addComment").on('click', function (data) {
+            data.preventDefault();
+
+            if (!data) {
+                return;
+            };
+
+            $("#nameWrap").removeClass('has-error');
+            $("#bodyWrap").removeClass('has-error');
+
+            if (!$("#inputName").val()) {
+                $("#nameWrap").addClass('has-error');
+            }
+            if (!$("#comment").val()) {
+                $("#bodyWrap").addClass('has-error');
+            }
+
+            if (!$("#inputName").val() || !$("#comment").val()) {
+                return;
+            }
+
+            var form = $("#commentForm");
+            var url = form.attr("action");
+            var formData = $(form).serializeArray();
+            formData.push({ name: "ArticleId", value: '@Model' });
+            $.post(url, formData).done(function (data) {
+                $("#commentForm .overlay").show();
+                if (data.success) {
+                    $("#commentForm .overlay").addClass('success');
+                    $("#sendedCommentStatus").text("Сообщение будет опубликованно после проверки модератором. Спасибо!");
+                } else {
+                    $("#commentForm .overlay").addClass('success');
+                    $("#sendedCommentStatus").text("Ошибка");
+                }
+            });
+        });
+    });
+</script>

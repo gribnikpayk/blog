@@ -1,11 +1,37 @@
 ﻿@using System
+@using System.Collections.Generic
 @model Blog.ViewModel.PageViewModel
 
-<ul class="pagination">
-    @for (var i = 1; i <= Model.PageCount; i++)
-    {
-        <li>
-            <a asp-controller="@Model.Controller" asp-action="@Model.Action" asp-route-page="@i">@i</a>
-        </li>
-    }
-</ul>
+@if (Model.PageCount > 1)
+{
+    <ul class="pagination">
+        @for (var i = 1; i <= Model.PageCount; i++)
+        {
+            {
+                var dict = new Dictionary<string, string>
+                {
+                    {"page", @i.ToString() }
+                };
+                if (Model.Params != null)
+                {
+                    foreach (var param in Model.Params)
+                    {
+                        dict.Add(param.Key,param.Value);
+                    }
+                }
+                var className = i == Model.CurrentPage ? "active" : string.Empty;
+                
+                <li class='@className'>
+                    @if (i == Model.CurrentPage)
+                    {
+                        <span>@i</span>
+                    }
+                    else
+                    {
+                        <a asp-all-route-data="@dict" asp-controller="@Model.Controller" asp-action="@Model.Action">@i</a>
+                    }
+                </li>
+            }
+        }
+    </ul>
+}

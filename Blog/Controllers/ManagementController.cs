@@ -24,10 +24,14 @@ namespace Blog.Controllers
         {
             using (var db = new BloggingContext())
             {
-                var articles = db.Articles.Take(10 * page)
-                    .Skip((10 * page) - 10)
+                var articles = db.Articles
                     .OrderByDescending(x => x.IsTopPlacement)
-                    .ThenByDescending(x => x.Date).ToList();
+                    .ThenByDescending(x => x.Date)
+                    .Take(10 * page)
+                    .Skip((10 * page) - 10)
+                    .ToList();
+
+
                 var count = db.Articles.Count();
                 var viewModel = new ManagementViewModel
                 {
@@ -68,6 +72,7 @@ namespace Blog.Controllers
             {
                 var article = model.ToArticle();
                 article.Date = DateTime.UtcNow;
+                article.Author = "Denis";
                 db.Articles.Add(article);
 
                 if (!string.IsNullOrEmpty(model.Tags))
@@ -161,6 +166,12 @@ namespace Blog.Controllers
                 }
             }
             return Json("");
+        }
+
+        [HttpGet]
+        public IActionResult AllComents()
+        {
+            return View();
         }
     }
 }

@@ -1,0 +1,43 @@
+﻿@using System.Linq
+@using Jdenticon
+@using Microsoft.AspNetCore.Mvc.Rendering
+@model System.Collections.Generic.List<Blog.Component.CommentViewModel>
+
+
+@if (Model!= null && Model.Any())
+{
+    <div class="row">
+        <legend>Комментарии</legend>
+        @foreach (var comment in Model)
+        {
+            <div class="row">
+                <div class="col-sm-2">
+                    <div class="thumbnail commentAvatar">
+                        @Html.Raw(@Identicon.FromValue(comment.Author, size: 70).ToSvg())
+                    </div><!-- /thumbnail -->
+                </div><!-- /col-sm-1 -->
+                <div class="col-sm-10">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <strong>
+                            @if (!string.IsNullOrEmpty(comment.Site))
+                            {
+                                @comment.Author
+                            }
+                            else
+                            {
+                                <a href="@comment.Site">@comment.Author</a>
+                            }
+                            </strong> 
+                            <span class="text-muted">@Html.Partial("DateTimeFormat", comment.Date)</span>
+                        </div>
+                        <div class="panel-body">
+                            @comment.Body
+                        </div><!-- /panel-body -->
+                    </div><!-- /panel panel-default -->
+                </div><!-- /col-sm-5 -->
+            </div>
+        }
+    </div>
+    <!-- /row -->
+}

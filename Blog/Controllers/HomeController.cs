@@ -19,10 +19,12 @@ namespace Blog.Controllers
             {
                 var articles = db.Articles
                     .Where(x => x.IsPublished)
+                    .OrderByDescending(x => x.IsTopPlacement)
+                    .ThenByDescending(x => x.Date)
                     .Take(10 * page)
                     .Skip((10 * page) - 10)
-                    .OrderByDescending(x => x.IsTopPlacement)
-                    .ThenByDescending(x => x.Date).ToList();
+                    .ToList();
+
                 var count = db.Articles
                     .Count(x => x.IsPublished);
                 var viewModel = new HomeViewModel
@@ -33,7 +35,8 @@ namespace Blog.Controllers
                         Action = "Index",
                         Controller = "Home",
                         RowPerPage = 10,
-                        RowCount = count
+                        RowCount = count,
+                        CurrentPage = page
                     }
                 };
                 return View(viewModel);
@@ -46,21 +49,25 @@ namespace Blog.Controllers
             {
                 var articles = db.Articles
                     .Where(x => x.IsPublished && x.Categories.Contains(name))
+                    .OrderByDescending(x => x.IsTopPlacement)
+                    .ThenByDescending(x => x.Date)
                     .Take(10 * page)
                     .Skip((10 * page) - 10)
-                    .OrderByDescending(x => x.IsTopPlacement)
-                    .ThenByDescending(x => x.Date).ToList();
+                    .ToList();
+
                 var count = db.Articles
-                    .Count(x => x.IsPublished);
+                    .Count(x => x.IsPublished && x.Categories.Contains(name));
                 var viewModel = new HomeViewModel
                 {
                     Articles = articles.Select(x => x.ToArticleViewModel()).ToList(),
                     PageViewModel = new PageViewModel
                     {
-                        Action = "Index",
+                        Action = "Category",
                         Controller = "Home",
                         RowPerPage = 10,
-                        RowCount = count
+                        RowCount = count,
+                        CurrentPage = page,
+                        Params = new Dictionary<string, string> { { "name", name } }
                     }
                 };
                 return View("~/Views/Home/Index.cshtml", viewModel);
@@ -73,21 +80,25 @@ namespace Blog.Controllers
             {
                 var articles = db.Articles
                     .Where(x => x.IsPublished && x.Tags.Contains(name))
+                    .OrderByDescending(x => x.IsTopPlacement)
+                    .ThenByDescending(x => x.Date)
                     .Take(10 * page)
                     .Skip((10 * page) - 10)
-                    .OrderByDescending(x => x.IsTopPlacement)
-                    .ThenByDescending(x => x.Date).ToList();
+                    .ToList();
+
                 var count = db.Articles
-                    .Count(x => x.IsPublished);
+                    .Count(x => x.IsPublished && x.Tags.Contains(name));
                 var viewModel = new HomeViewModel
                 {
                     Articles = articles.Select(x => x.ToArticleViewModel()).ToList(),
                     PageViewModel = new PageViewModel
                     {
-                        Action = "Index",
+                        Action = "Tag",
                         Controller = "Home",
                         RowPerPage = 10,
-                        RowCount = count
+                        RowCount = count,
+                        CurrentPage = page,
+                        Params = new Dictionary<string, string> { { "name", name } }
                     }
                 };
                 return View("~/Views/Home/Index.cshtml", viewModel);
@@ -104,6 +115,13 @@ namespace Blog.Controllers
         {
             return View();
         }
+
+        [HttpGet]
+        public IActionResult About()
+        {
+            return View();
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model)

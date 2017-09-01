@@ -1,4 +1,5 @@
-﻿@model Blog.ViewModel.ArticleViewModel
+﻿@using Microsoft.AspNetCore.Mvc.Rendering
+@model Blog.ViewModel.ArticleViewModel
 @{
     ViewData["Title"] = Model.Title;
 }
@@ -7,11 +8,64 @@
     <meta name="keywords" content="@Model.Tags" />
 }
 
-<div class="container content">
+<div class="container content article">
+    <div class="row" style="margin-top: 100px;">
+        <div class="col-lg-8 panel">
+            <h2 style="margin-bottom: 20px;">@Model.Title</h2>
+            <div style="margin-bottom: 40px;">
+                <span class="glyphicon glyphicon-time"></span>
+                @Html.Partial("DateTimeFormat", Model.Date)
+            </div>
+            <div>
+                @Html.Raw(Model.Body)
+            </div>
+            <p class="lead" style="margin: 30px 0 5px 0px;">
+                by
+                <a href="#">@Model.Author</a>
+            </p>
+            <div class="row" style="margin-bottom: 20px;">
+                <div style="padding-left: 15px">
+                    @if (!string.IsNullOrEmpty(Model.Tags))
+                    {
+                        <span class="glyphicon glyphicon-bookmark"></span>
+                        foreach (var tag in Model.Tags.Split(','))
+                        {
+                            <a href="#">@tag</a>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 widget">
+
+            <!-- Search Widget -->
+            @*<div class="card my-4">
+                    <h5 class="card-header">Search</h5>
+                    <div class="card-body">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Search for...">
+                            <span class="input-group-btn">
+                                <button class="btn btn-secondary" type="button">Go!</button>
+                            </span>
+                        </div>
+                    </div>
+                </div>*@
+
+            <!-- Categories Widget -->
+            @await Component.InvokeAsync("AllCategories")
+
+            <!-- Tag Widget -->
+            @await Component.InvokeAsync("AllTags")
+
+        </div>
+    </div>
+    
     <div class="row">
-        <h2>@Model.Title</h2>
-        <div>
-            @Html.Raw(Model.Body)
+        <div class="col-lg-8">
+            @await Component.InvokeAsync("AllComments", @Model.Id)
+        </div>
+        <div class="col-lg-8">
+            @await Component.InvokeAsync("AddComment", @Model.Id)
         </div>
     </div>
 </div>

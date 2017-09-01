@@ -43,7 +43,7 @@
                         processData: false,
                         data: data,
                         success: function (result) {
-                            $("#path").text(window.location.hostname + "/" + result);
+                            $("#path").text(result);
                             $("#status").hide();
                         },
                         error: function (xhr, status, p3, p4) {

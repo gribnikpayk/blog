@@ -2,7 +2,7 @@
 @using Microsoft.AspNetCore.Mvc.Rendering
 @model HomeViewModel
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "MyDevExp";
 }
 @section Panorama{
     <div class="panorama">
@@ -18,24 +18,24 @@
 
         <!-- Post Content Column -->
         <div class="col-lg-8">
-            
+
             @foreach (var article in Model.Articles)
             {
                 <div>
                     <!-- Title -->
-                    <h1 class="mt-4">@article.Title</h1>
+                    <h1 class="mt-4">
+                        <a asp-action="Index" asp-controller="Article" asp-route-id="@article.Id">
+                            @article.Title
+                        </a>
+                    </h1>
 
                     <!-- Author -->
-                    <p class="lead">
+                    <p class="lead" style="float: left;">
                         by
                         <a href="#">@article.Author</a>
                     </p>
-
-                    <hr>
-
-                    <!-- Date/Time -->
-                    <div class="row">
-                        <div style="padding-left: 15px">
+                    <div class="row" style="float: right;">
+                        @*<div style="padding-left: 15px">
                             @if (!string.IsNullOrEmpty(article.Tags))
                             {
                                 <span class="glyphicon glyphicon-bookmark"></span>
@@ -44,7 +44,7 @@
                                     <a href="#">@tag</a>
                                 }
                             }
-                        </div>
+                        </div>*@
                         <div style="padding-left: 15px">
                             @*<span class="glyphicon glyphicon-pencil"></span> <a href="singlepost.html#comments">20 Comments</a>*@
                             <span class="glyphicon glyphicon-time"></span>
@@ -52,12 +52,11 @@
 
                         </div>
                     </div>
-
-                    <hr>
+                    <div class="clearfix"></div>
 
                     <!-- Post Content -->
                     <div>
-                        @Html.Partial("ShortDescription", article.Body)
+                        @Html.Raw(article.ShortDescription)
                     </div>
                     <p class="text-right">
                         <a asp-action="Article" asp-controller="Management" asp-route-id="@article.Id">Читать</a>
@@ -72,16 +71,16 @@
 
             <!-- Search Widget -->
             @*<div class="card my-4">
-                        <h5 class="card-header">Search</h5>
-                        <div class="card-body">
-                            <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Search for...">
-                                <span class="input-group-btn">
-                                    <button class="btn btn-secondary" type="button">Go!</button>
-                                </span>
-                            </div>
+                    <h5 class="card-header">Search</h5>
+                    <div class="card-body">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Search for...">
+                            <span class="input-group-btn">
+                                <button class="btn btn-secondary" type="button">Go!</button>
+                            </span>
                         </div>
-                    </div>*@
+                    </div>
+                </div>*@
 
             <!-- Categories Widget -->
             @await Component.InvokeAsync("AllCategories")

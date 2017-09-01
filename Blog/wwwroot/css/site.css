@@ -12,11 +12,7 @@ body {
 }
 
 /* Set widths on the form inputs since otherwise they're 100% wide */
-input,
-select,
-textarea {
-    max-width: 280px;
-}
+
 
 /* Carousel */
 .carousel-caption p {
@@ -30,9 +26,15 @@ textarea {
 }
 
 /* Hide/rearrange for smaller screens */
-@media screen and (max-width: 767px) {
+@media screen and (max-width: 1199px) {
     /* Hide captions */
     .carousel-caption {
+        display: none;
+    }
+    .container.content.article .panel {
+        box-shadow: none;
+    }
+    .container.content.article .widget {
         display: none;
     }
 }
@@ -126,4 +128,46 @@ a.btn.btn-primary.btn-lg.tag {
 
 .AllCategory .col-lg-6 {
     padding: 5px;
+}
+
+
+#commentForm .overlay {
+    position: absolute;
+    width: 360px;
+    height: 160px;
+    top: calc(50% - 80px);
+    left: calc(50% - 180px);
+    z-index: 9999;
+    opacity: 0.3;
+    border-radius: 10px;
+    display: none;
+}
+
+    #commentForm .overlay.success {
+        background: #4caf50;
+    }
+
+    #commentForm .overlay.error {
+        background: #e51c23;
+    }
+
+    #commentForm .overlay p {
+        color: white;
+        text-align: center;
+        line-height: 38px;
+        font-size: 20px;
+        margin-top: 25px;
+    }
+
+#commentForm {
+    position: relative;
+}
+
+.commentAvatar {
+    width: 80px;
+    height: 80px;
+}
+
+.note-editable.panel-body {
+    height: 500px;
 }
