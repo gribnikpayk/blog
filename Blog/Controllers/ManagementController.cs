@@ -157,7 +157,7 @@ namespace Blog.Controllers
 
             if (file != null)
             {
-                string path = "/images/" + file.FileName;
+                string path = $"/images/ArticleArt/{Guid.NewGuid()}" + file.FileName;
                 // сохраняем файл в папку Files в каталоге wwwroot
                 using (var fileStream = new FileStream(_appEnvironment.WebRootPath + path, FileMode.Create))
                 {

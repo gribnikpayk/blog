@@ -8,6 +8,7 @@ namespace Blog.Controllers
     public class ArticleController : Controller
     {
         [HttpGet]
+        [Route("[controller]/{id?}")]
         public IActionResult Index(int id)
         {
             using (var db = new BloggingContext())

@@ -5,12 +5,32 @@
     ViewData["Title"] = "MyDevExp";
 }
 @section Panorama{
-    <div class="panorama">
-        <img src="~/images/Panorama_2.jpg">
-        <img src="~/images/Panorama_2.jpg">
+    <style>
+        .headDecoration {
+            position: relative;
+        }
+        .headDecoration #particles-js {
+            height: 200px;
+        }
+        .headDecoration h3 {
+            position: absolute;
+            font-size: 23px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            top: 40px;
+            color: #2395f3;
+        }
+    </style>
+    <script src="~/lib/particles.min.js"></script>
+    <div class="headDecoration">
+        <h3>технические решения, проверенные на личном опыте</h3>
+        <div id="particles-js"></div>
     </div>
+    <script>
+        particlesJS.load('particles-js', 'lib/particles.json', function() {});
+    </script>
 }
-
 
 <div class="container">
 
@@ -59,7 +79,7 @@
                         @Html.Raw(article.ShortDescription)
                     </div>
                     <p class="text-right">
-                        <a asp-action="Article" asp-controller="Management" asp-route-id="@article.Id">Читать</a>
+                        <a asp-action="Index" asp-controller="Article" asp-route-id="@article.Id">Читать</a>
                     </p>
                     <hr>
                 </div>

@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <Folder Include="Views\Shared\Components\AddComment\" />
+    <Folder Include="wwwroot\images\ArticleArt\" />
   </ItemGroup>
 
 </Project>
