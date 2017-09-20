@@ -75,37 +75,7 @@ namespace Blog.Controllers
                 article.Author = "Denis";
                 db.Articles.Add(article);
 
-                if (!string.IsNullOrEmpty(model.Tags))
-                {
-                    var tags = model.Tags
-                        .Split(',')
-                        .Where(x => !string.IsNullOrEmpty(x))
-                        .Select(x => x.Trim())
-                        .ToList();
-                    var tagsFromDB = db.Tag
-                        .Select(x => x.Name)
-                        .ToList();
-
-                    var newTags = tags.Where(x => !tagsFromDB.Contains(x))
-                        .Select(x => new Tag{Name = x});
-                    db.Tag.AddRange(newTags);
-                }
-
-                if (!string.IsNullOrEmpty(model.Categories))
-                {
-                    var categories = model.Categories
-                        .Split(',')
-                        .Where(x => !string.IsNullOrEmpty(x))
-                        .Select(x => x.Trim())
-                        .ToList();
-                    var categoriesFromDB = db.Category
-                        .Select(x => x.Name)
-                        .ToList();
-
-                    var newCategories = categories.Where(x => !categoriesFromDB.Contains(x))
-                        .Select(x => new Category { Name = x });
-                    db.Category.AddRange(newCategories);
-                }
+                UpdateTagsAndCategories(model, db);
                 db.SaveChanges();
             }
             return View();
@@ -129,6 +99,7 @@ namespace Blog.Controllers
                 var date = db.Articles.Where(x => x.Id == model.Id).Select(x => x.Date).FirstOrDefault();
                 var article = model.ToArticle();
                 article.Date = date;
+                UpdateTagsAndCategories(model, db);
                 db.Update(article);
                 db.SaveChanges();
             }
@@ -172,6 +143,44 @@ namespace Blog.Controllers
         public IActionResult AllComents()
         {
             return View();
+        }
+
+
+        private void UpdateTagsAndCategories(ArticleViewModel model, BloggingContext db)
+        {
+            if (!string.IsNullOrEmpty(model.Tags))
+            {
+                var tags = model.Tags
+                    .Split(',')
+                    .Select(x => x.Trim())
+                    .Where(x => !string.IsNullOrEmpty(x))
+                    .ToList();
+
+                var tagsFromDB = db.Tag
+                    .Select(x => x.Name)
+                    .ToList();
+
+                var newTags = tags.Where(x => !tagsFromDB.Contains(x))
+                    .Select(x => new Tag {Name = x});
+                db.Tag.AddRange(newTags);
+            }
+
+            if (!string.IsNullOrEmpty(model.Categories))
+            {
+                var categories = model.Categories
+                    .Split(',')
+                    .Select(x => x.Trim())
+                    .Where(x => !string.IsNullOrEmpty(x))
+                    .ToList();
+
+                var categoriesFromDB = db.Category
+                    .Select(x => x.Name)
+                    .ToList();
+
+                var newCategories = categories.Where(x => !categoriesFromDB.Contains(x))
+                    .Select(x => new Category {Name = x});
+                db.Category.AddRange(newCategories);
+            }
         }
     }
 }

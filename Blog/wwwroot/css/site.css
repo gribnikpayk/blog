@@ -171,3 +171,15 @@ a.btn.btn-primary.btn-lg.tag {
 .note-editable.panel-body {
     height: 500px;
 }
+
+a span.badge {
+    float: right;
+}
+body {
+    background: rgba(236, 240, 241, 0.1);
+}
+
+h3.titleName.shortView a {
+    color: #444444;
+    font-size: 19px;
+}

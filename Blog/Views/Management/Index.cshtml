@@ -37,14 +37,24 @@
 <h2>Management</h2>
 
 <a class="btn btn-info btn-lg" asp-controller="Management" asp-action="CreateArticle">Добавить</a>
+<a class="btn btn-info btn-lg" id="changeView">Вид</a>
+<a class="btn btn-info btn-lg">Комментарии</a>
+<script>
+    $(document).ready(function () {
+        $("#changeView").click(function() {
+            $(".toogleContent").toggle();
+            $(".titleName").toggleClass('shortView');
+        });
+    });
+</script>
 
 @foreach (var article in Model.Articles)
 {
     <article>
-        <h2><a asp-action="Article" asp-controller="Management" asp-route-id="@article.Id">@article.Title</a></h2>
+        <h3 class="titleName"><a asp-action="Article" asp-controller="Management" asp-route-id="@article.Id">@article.Title</a></h3>
         <a asp-action="UpdateArticle" asp-route-id="@article.Id">Обновить</a>
         <a asp-action="DeleteArticle" asp-route-id="@article.Id">Удалить</a>
-        <div class="row">
+        <div class="row toogleContent">
             <div style="padding-left: 15px">
                 @if (!string.IsNullOrEmpty(article.Tags))
                 {
@@ -63,14 +73,14 @@
             </div>
         </div>
 
-        <hr>
-        <div>
+        <hr class="toogleContent">
+        <div class="toogleContent">
             @Html.Partial("ShortDescription", article.Body)
         </div>
-        <p class="text-right">
+        <p class="text-right toogleContent">
             <a asp-action="Article" asp-controller="Management" asp-route-id="@article.Id">Читать</a>
         </p>
-        <hr>
+        <hr class="toogleContent">
     </article>
 
 
